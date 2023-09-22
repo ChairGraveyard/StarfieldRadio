@@ -1,0 +1,14 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+    "name": "sfse-plugin-template",
+    "version-string": "1.0.0",
+    "description": "sfse plugin for starfield",
+    "homepage": "https://github.com/gottyduke/SF_PluginTemplate",
+    "dependencies": [
+        "spdlog",
+        "nlohmann-json",
+        "simpleini",
+        "tomlplusplus",
+        "xbyak"
+    ]
+}
