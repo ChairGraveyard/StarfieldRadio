@@ -12,18 +12,16 @@ RandomizeStartTime = false
 # "Station Name | URL" (Now Playing <Station Name> will be displayed when switching stations)
 # "Station Name | Filename.mp3"
 Playlist = [
-    "StarfieldRadio.com - The Black Box With Willy Kino|https://audio.jukehost.co.uk/j1lLpnqe9unGq2ejot557wgdISvdjoyr",
-    "StarfieldRadio.com - Sol Train: Music from the 3rd Rock|https://audio.jukehost.co.uk/1uJEVLDZQkXH7vruCl1Ar7y9oCVlIdBd", 
-    "StarfieldRadio.com - Nocturna - Music of the Ancients|https://audio.jukehost.co.uk/I0AABbN0djCvXxPmIGqZZ884Sd8VlJkx",
-    "StarfieldRadio.com - The Dust|https://audio.jukehost.co.uk/9dXuUtOqDhk9YQ5sxEtRS0S0Lh14egLH",
-    "StarfieldRadio.com - Radio Active|https://audio.jukehost.co.uk/lhVgZdXRGbri7szLrguYhWstqjje18H3"
+    "StarfieldRadio.com - The Black Box With Willy Kino | https://audio.jukehost.co.uk/j1lLpnqe9unGq2ejot557wgdISvdjoyr",
+    "StarfieldRadio.com - Sol Train: Music from the 3rd Rock | https://audio.jukehost.co.uk/1uJEVLDZQkXH7vruCl1Ar7y9oCVlIdBd", 
+    "StarfieldRadio.com - Nocturna - Music of the Ancients | https://audio.jukehost.co.uk/I0AABbN0djCvXxPmIGqZZ884Sd8VlJkx" 
 ]
 ToggleRadioKey=0x60 # Toggles the Radio on and off (Default: Numpad 0)
 SwitchModeKey=0x6D # Switches between Random and Playlist mode (Default: Numpad -)
-VolumeUpKey=0x69 # Increases the volume (Default: Numpad 9)
-VolumeDownKey=0x66 # Decreases the volume (Default: Numpad 6)
-NextStationKey=0x68 # Switches to the next station (Default: Numpad 8)
-PreviousStationKey=0x67 # Switches to the previous station (Default: Numpad 7)
+VolumeUpKey=0x6B # Increases the volume (Default: Numpad +)
+VolumeDownKey=0xB0 # Decreases the volume (Default: Numpad Enter)
+NextStationKey=0x68 # Switches to the next station (Default: Numpad 2)
+PreviousStationKey=0x67 # Switches to the previous station (Default: Numpad 1)
 SeekForwardKey=0x6A # Seeks forward (Default: Numpad *)
 SeekBackwardKey=0x6F # Seeks backward (Default: Numpad /)
 

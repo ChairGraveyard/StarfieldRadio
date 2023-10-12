@@ -21,6 +21,8 @@
 #include <iomanip>
 #include <ctime>
 
+static bool gIsInitialized = false;
+
 // For type aliases
 using namespace DKUtil::Alias;  
 std::wstring to_wstring(const std::string& stringToConvert)
@@ -30,15 +32,17 @@ std::wstring to_wstring(const std::string& stringToConvert)
 	return wideString;
 }
 
-static REL::Relocation<__int64 (*)(double, char*, ...)> ExecuteCommand{ REL::Offset(0x287DF04) };
+void ConsoleExecute(std::string command)
+{
+	static REL::Relocation<void**>                     BGSScaleFormManager{ REL::ID(879512) };
+	static REL::Relocation<void (*)(void*, const char*)> ExecuteCommand{ REL::ID(166307) };
+	ExecuteCommand(*BGSScaleFormManager, command.data());
+}
 
 void Notification(std::string Message)
 {
-	if (!RE::TESForm::LookupByID(0x14))
-		return;
-	
 	std::string Command = fmt::format("cgf \"Debug.Notification\" \"{}\"", Message);
-	ExecuteCommand(0, Command.data());
+	ConsoleExecute(Command);
 }
 
 class RadioPlayer
@@ -443,16 +447,39 @@ static DWORD MainLoop(void* unused)
 	return 0;
 }
 
+class OpenCloseSink final :
+	public RE::BSTEventSink<RE::MenuOpenCloseEvent>
+{
+public:
+	static OpenCloseSink* GetSingleton()
+	{
+		static OpenCloseSink self;
+		return std::addressof(self);
+	}
+
+	RE::BSEventNotifyControl ProcessEvent(RE::MenuOpenCloseEvent const& a_event, RE::BSTEventSource<RE::MenuOpenCloseEvent>* a_eventSource)
+	{
+		if (a_event.menuName == "HUDMenu" && a_event.opening && !gIsInitialized) {
+			INFO("Creating Input Thread")
+			CreateThread(NULL, 0, MainLoop, NULL, 0, NULL);
+
+			gIsInitialized = true;
+		}
+
+		return RE::BSEventNotifyControl::kContinue;
+	}
+};
+
 DLLEXPORT constinit auto SFSEPlugin_Version = []() noexcept {
 	SFSE::PluginVersionData data{};
 
 	data.PluginVersion(Plugin::Version);
 	data.PluginName(Plugin::NAME);
 	data.AuthorName(Plugin::AUTHOR);
-	data.UsesSigScanning(true);
-	//data.UsesAddressLibrary(true);
-	data.HasNoStructUse(true);
-	//data.IsLayoutDependent(true);
+	//data.UsesSigScanning(true);
+	data.UsesAddressLibrary(true);
+	//data.HasNoStructUse(true);
+	data.IsLayoutDependent(true);
 	data.CompatibleVersions({ SFSE::RUNTIME_LATEST });
 
 	return data;
@@ -465,8 +492,11 @@ namespace
 		switch (a_msg->type) {
 		case SFSE::MessagingInterface::kPostLoad:
 			{
-				INFO("Creating Input Thread")
-				CreateThread(NULL, 0, MainLoop, NULL, 0, NULL);
+			
+				if (const auto ui = RE::UI::GetSingleton(); ui) {
+					ui->RegisterSink<RE::MenuOpenCloseEvent>(OpenCloseSink::GetSingleton());
+				}
+
 				break;
 			}
 		default:
