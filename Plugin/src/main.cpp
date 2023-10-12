@@ -435,11 +435,11 @@ static DWORD MainLoop(void* unused)
 
 		if (SeekForwardKeyState < 0 && !SeekForwardHoldFlag) {
 			SeekForwardHoldFlag = 1;
-			Radio.Seek(1);
+			Radio.Seek(10);
 		}
 		if (SeekBackwardKeyState < 0 && !SeekBackwardHoldFlag) {
 			SeekBackwardHoldFlag = 1;
-			Radio.Seek(-1);
+			Radio.Seek(-10);
 		}
 		Sleep(TimePerFrame);
 	}
